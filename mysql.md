@@ -2,6 +2,7 @@
     $ npm install mysql
 ### Introduction
 这是一个node.js的mysql驱动，使用JavaScript编写，不需要编译，完全开源，下面先放一个实例吧
+    
     var mysql      = require('mysql');
     var connection = mysql.createConnection({
       host     : 'localhost',
