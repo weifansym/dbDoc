@@ -25,6 +25,7 @@ redis在Linux环境下配置很简单，需要下载安装就好了。在windows
 
     d:
     cd D:\DevlopPrograms\Redis-x64
+|    具体的注册服务参看Windows Service 这个文档
 注册服务,可以保存为**service-install.bat**文件:
 
     redis-server.exe --service-install redis.windows.conf --loglevel verbose
@@ -35,9 +36,6 @@ redis在Linux环境下配置很简单，需要下载安装就好了。在windows
     redis-server --service-uninstall
 可以在注册服务时，通过**–service-name redisService1** 参数直接指定服务名，适合安装多个实例的情况，卸载也是同样的道理。
 
-启动redis服务器时也可以直接指定配置文件，可以保存为 **startup.bat**文件：
-
-    redis-server.exe redis.windows.conf
 
 ### 修改配置文件
 修改配置文件**redis.windows.conf**，如果有中文，请另存为UTF-8编码。
