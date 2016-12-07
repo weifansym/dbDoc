@@ -45,8 +45,9 @@ function execTrans(sqlparamsEntities, callback) {
                     connection.query(sql, param, function (tErr, rows, fields) {
                         if (tErr) {
                             connection.rollback(function () {
+                                connection.release();
                                 console.log("事务失败，" + sql_param + "，ERROR：" + tErr);
-                                throw tErr;
+                                cb(tErr, null);
                             });
                         } else {
                             return cb(null, 'ok');
@@ -59,11 +60,7 @@ function execTrans(sqlparamsEntities, callback) {
             async.series(funcAry, function (err, result) {
                 console.log("transaction error: " + err);
                 if (err) {
-                    connection.rollback(function (err) {
-                        console.log("transaction error: " + err);
-                        connection.release();
-                        return callback(err, null);
-                    });
+                    console.log("transaction error: " + err);  
                 } else {
                     connection.commit(function (err, info) {
                         console.log("transaction info: " + JSON.stringify(info));
