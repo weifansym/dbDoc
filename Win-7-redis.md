@@ -14,6 +14,8 @@ redis在Linux环境下配置很简单，需要下载安装就好了。在windows
 
 如果要进行基准测试,可以启动服务器后,在cmd中运行 redis-benchmark.exe 程序。
 ### 启动与注册服务
+
+### 直接运行redis-server.exe文件进行启动 
 解压到后运行"Redis-x64"文件夹下的redis-server.exe即可，但是这样运行会出现一个如下警告提示：
 
 
@@ -21,10 +23,12 @@ redis在Linux环境下配置很简单，需要下载安装就好了。在windows
 
 提示也比较明显，没有明确的配置文件，使用的是默认配置，请使用‘redis-server /path/to/redis.conf’指定明确的配置文件。这里由于Redis-x64文件下有了redis-windows.conf我们就可以忽略这个警告提示。这样我们的redis服务就算运行起来了。
 
+### 通过注册windows服务进行启动 
 如果准备长期使用，则需要注册为系统服务。进入CMD，切换目录：
 
     d:
     cd D:\DevlopPrograms\Redis-x64
+
 注册服务,可以保存为**service-install.bat**文件:
 
     redis-server.exe --service-install redis.windows.conf --loglevel verbose
@@ -35,9 +39,7 @@ redis在Linux环境下配置很简单，需要下载安装就好了。在windows
     redis-server --service-uninstall
 可以在注册服务时，通过**–service-name redisService1** 参数直接指定服务名，适合安装多个实例的情况，卸载也是同样的道理。
 
-启动redis服务器时也可以直接指定配置文件，可以保存为 **startup.bat**文件：
-
-    redis-server.exe redis.windows.conf
+> 具体的注册服务参看Windows Service Documentation 这个文档
 
 ### 修改配置文件
 修改配置文件**redis.windows.conf**，如果有中文，请另存为UTF-8编码。
