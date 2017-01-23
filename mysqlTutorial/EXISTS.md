@@ -147,9 +147,8 @@ MySQL EXISTS操作是一个Boolean类型的操作，返回值不是true就是fal
     WHERE EXISTS (SELECT NULL)
     ORDER BY CategoryName ASC
 其实不要被这个EXISTS迷惑了。。你只需要关注**EXISTS**的返回值有没有数据集就好了，有数据集就是true，没有就是false
-
-
-   
+> 这里
+  有一个有趣的问题：http://www.cnblogs.com/mytechblog/articles/2105785.html 
  
     
 
