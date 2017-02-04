@@ -14,3 +14,8 @@
 
 尽管我们可以在查询中对每个可能的列做索引，但是一些不必要的索引浪费空间，而且在mysql决定使用哪个索引的时候还浪费时间。另外索引也会增减插入，更新，删除等
 操作的开销，因为再做这个操作的时候涉及到的索引也是需要更新的。所以你需要在平衡更快查询的情况适当的使用索引。
+
+## How MySQL Uses Indexes
+索引被用来根据给定的列值进行快速的查找。没有索引，mysql将会从数据库的第一行开始遍历这个数据表来查询。表越大，查询花费的时间就越大。如果一个表在查询的时候具有索引，mysql通过索引可以很快的决定数据的位置而不用遍历整个表。这样查询相对遍历整个表是很快的。
+
+Most MySQL indexes (PRIMARY KEY, UNIQUE, INDEX, and FULLTEXT) are stored in B-trees. Exceptions: Indexes on spatial data types use R-trees; MEMORY tables also support hash indexes; InnoDB uses inverted lists for FULLTEXT indexes.
