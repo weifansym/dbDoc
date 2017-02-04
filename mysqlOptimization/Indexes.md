@@ -8,6 +8,7 @@
 * 9.3.7 [InnoDB and MyISAM Index Statistics Collection](https://dev.mysql.com/doc/refman/5.7/en/index-statistics.html)
 * 9.3.8 [Comparison of B-Tree and Hash Indexes](https://dev.mysql.com/doc/refman/5.7/en/index-btree-hash.html)
 * 9.3.9 [Optimizer Use of Generated Column Indexes](https://dev.mysql.com/doc/refman/5.7/en/generated-column-index-optimizations.html)
+
 提高查询性能最好的方式就是创建索引了，我们可以在一个或者是多个列上来创建索引。索引就像一个表的行的指针，允许查询很快决定那个列是符合where条件的，
 然后检索出符合条件的所有行的其他列的值。所有的mysql的数据类型都可以做索引。
 
