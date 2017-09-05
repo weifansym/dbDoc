@@ -13,14 +13,14 @@ Node.js 中了连接Redis要使用redis（node_redis）模块，该模块是一�
     const client = redis.createClient();
     // 不使用默认连接方式时，使用如下方式创建客户端：
     // const client = redis.createClient({host:'localhost', port:6379, password:'myPassword'});
-
+    
     // 如果想要选择第3个而不是第0个(默认)的数据库，调用方式如下：
     // client.select(3, function() { /* ... */ });
-
+    
     client.on("error", function (err) {
       console.log("Error " + err);
     });
-
+    
     client.set("string key", "string val", redis.print);
     client.hset("hash key", "hashtest 1", "some value", redis.print);
     client.hset(["hash key", "hashtest 2", "some other value"], redis.print);
@@ -51,14 +51,14 @@ Node.js 中了连接Redis要使用redis（node_redis）模块，该模块是一�
     var redis = require('redis');
     bluebird.promisifyAll(redis.RedisClient.prototype);
     bluebird.promisifyAll(redis.Multi.prototype);
-    
+
 这会给所有node_redis函数添加Async支持(如：return client.getAsync().then())：
-    
+​    
     // 对于一个 'foo': 'bar' 值，要以通过以下方式代替 client.get('foo', cb);:
     return client.getAsync('foo').then(function(res) {
         console.log(res); // => 'bar'
     });
-
+    
     // 使用多个 promise 时可以像这样：
     return client.multi().get('foo').execAsync().then(function(res) {
         console.log(res); // => 'bar'
@@ -71,15 +71,26 @@ Node.js 中了连接Redis要使用redis（node_redis）模块，该模块是一�
     client.hmset("key", ["test keys 1", "test val 1", "test keys 2", "test val 2"], function (err, res) {});
     // 或
     client.hmset("key", "test keys 1", "test val 1", "test keys 2", "test val 2", function (err, res) {});
-    
+
 如果未传入key时，会返回null：
 
     client.get("missingkey", function(err, reply) {
       // 当未传入key时会返回null
       console.log(reply);
     });
-  
+
 Redis中的命名请查看：[Redis Command Reference](http://redis.io/commands)
+
+## Redis Commands
+
+ 这个包中的方法是和redis命令一一对应的，他不是一个提供缓存的包，你可以查看red is官网命令，获取更多的信息。
+
+例如设置一个字断自动到期，使用set命令：
+
+```
+// this key will expire after 10 seconds
+client.set('key', 'value!', 'EX', 10);
+```
 
 ## redis模块的API
 ### 连接与事件
@@ -128,20 +139,20 @@ client对象在连接到Redis服务器时会发送一些事件：
 
         var redis = require("redis");
         var client = redis.createClient({detect_buffers: true});
-
+        
         client.set("foo_rand000000000000", "OK");
-
+        
         // 这会返回一个JavaScript 字符串
         client.get("foo_rand000000000000", function (err, reply) {
           console.log(reply.toString()); // Will print `OK`
         });
-
+        
         // 这会返回一个Buffer，因为原始key被指定为Buffer
         client.get(new Buffer("foo_rand000000000000"), function (err, reply) {
           console.log(reply.toString()); // Will print ``
         });
         client.quit();
-retry_strategy选项的使用：
+    retry_strategy选项的使用：
 
         var client = redis.createClient({
           retry_strategy: function (options) {
@@ -177,10 +188,10 @@ retry_strategy选项的使用：
 flush命令用于设置其它命令的处理方式。如果不关心其它命令，应该设置为true；如果希望其它命令静默失败，应该设置为false。
 
 如，以下示例中会在响应被读取完成前断开Redis 服务器：
-    
+​    
     const redis = require("redis");
     const client = redis.createClient();
-
+    
     client.set("foo_rand000000000000", "some fantastic value", function (err, reply) {
       // 这会发生一个错误(flush 为 true时)或静默失败且回调函数不会被调用(flush 设置为 false时)
       console.log(err);
@@ -198,7 +209,7 @@ flush命令用于设置其它命令的处理方式。如果不关心其它命令
     const redis = require('./');
     const assert = require('assert');
     const client = redis.createClient();
-
+    
     client.on('error', function (err) {
       assert(err instanceof Error);
       assert(err instanceof redis.AbortError);
@@ -210,7 +221,7 @@ flush命令用于设置其它命令的处理方式。如果不关心其它命令
       assert(err instanceof redis.ReplyError); // => true
       assert.strictEqual(err.command, 'SET');
       assert.deepStrictEqual(err.args, ['foo', 123, 'bar']);
-
+    
       redis.debug_mode = true;
       client.set('foo', 'bar');
       client.get('foo');
@@ -225,10 +236,10 @@ flush命令用于设置其它命令的处理方式。如果不关心其它命令
 调用底层使用Socket连接的Redis服务器的unref()方法，这会程序退出而不再挂起
 
 注意，这是一个实验特性，只是一个支付Redis 协议的子集。
-    
+​    
     const redis = require("redis")
     const client = redis.createClient()
-
+    
     /*
       调用 unref() 后会使程序在执行完命令后立即退出
       其它情况下，服务器会挂起已建立的客户端连接
@@ -272,13 +283,13 @@ flush命令用于设置其它命令的处理方式。如果不关心其它命令
     var redis = require("redis");
     var sub = redis.createClient(), pub = redis.createClient();
     var msg_count = 0;
-
+    
     sub.on("subscribe", function (channel, count) {
       pub.publish("a nice channel", "I am sending a message.");
       pub.publish("a nice channel", "I am sending a second message.");
       pub.publish("a nice channel", "I am sending my last message.");
     });
-
+    
     sub.on("message", function (channel, message) {
       console.log("sub channel " + channel + ": " + message);
       msg_count += 1;
@@ -288,7 +299,7 @@ flush命令用于设置其它命令的处理方式。如果不关心其它命令
         pub.quit();
       }
     });
-
+    
     sub.subscribe("a nice channel");
 如果客户端发送一个SUBSCRIBE或PSUBSCRIBE命令，连接会进入subscriber模式。这时，只有命令确认订阅设置有效或退出。当订阅设置为空时，会返回正常模式。当在subscriber模式的情况下，如果你想法使用常规的命令去操作redis，只需要使用一个新的客户端来打开另一个连接就好了。
 ### 订阅相关事件
@@ -333,15 +344,15 @@ MULTI是一个命令队列，直到由EXEC发出，发出的命令都会Redis原
     const redis  = require("./index");
     const client = redis.createClient();
     var set_size = 20;
-
+    
     client.sadd("bigset", "a member");
     client.sadd("bigset", "another member");
-
+    
     while (set_size > 0) {
       client.sadd("bigset", "member " + set_size);
       set_size -= 1;
     }
-
+    
     // 多条执行链会在一个回调中
     client.multi()
       .scard("bigset")
@@ -368,15 +379,15 @@ Multi.exec()方法用于执行在Multi对象中排队的命令。如果你代码
 
     var redis  = require("redis"),
       client = redis.createClient(), multi;
-
+    
     // 开始一个单独的多命名队列
     multi = client.multi();
     multi.incr("incr thing", redis.print);
     multi.incr("incr other thing", redis.print);
-
+    
     // 立即执行
     client.mset("incr thing", 100, "incr other thing", 1, redis.print);
-
+    
     // 多命令排队并自动执行
     multi.exec(function (err, replies) {
      console.log(replies); // 101, 2
@@ -386,7 +397,7 @@ Multi.exec()方法用于执行在Multi对象中排队的命令。如果你代码
 
     var redis  = require("redis"),
       client = redis.createClient(), multi;
-
+    
     client.multi([
       ["mget", "multifoo", "multibar", redis.print],
       ["incr", "multifoo"],
@@ -422,7 +433,7 @@ redis.print()是一个用显示测试返回值的回调。如：
 
     var redis = require("redis"),
       client = redis.createClient();
-
+    
     client.on("connect", function () {
       client.set("foo_rand000000000000", "some fantastic value", redis.print);
       client.get("foo_rand000000000000", redis.print); 
@@ -462,7 +473,7 @@ client.connected属性会返回一个布尔值，表示与Redis 服务器的连�
     client.zadd(args, function (err, response) {
       if (err) throw err;
       console.log('added '+response+' items.');
-
+    
       // -Infinity and +Infinity also work
       var args1 = [ 'myzset', '+inf', '-inf' ];
       client.zrevrangebyscore(args1, function (err, response) {
@@ -470,7 +481,7 @@ client.connected属性会返回一个布尔值，表示与Redis 服务器的连�
         console.log('example1', response);
         // write your code here
       });
-
+    
       var max = 3, min = 1, offset = 1, count = 2;
       var args2 = [ 'myzset', max, min, 'WITHSCORES', 'LIMIT', offset, count ];
       client.zrevrangebyscore(args2, function (err, response) {
