@@ -1,0 +1,12 @@
+## Logical Query Operators
+官网地址
+[Logical Query Operators](https://docs.mongodb.com/manual/reference/operator/query-logical/)
+
+相关逻辑如下：
+```
+$and: 	Joins query clauses with a logical AND returns all documents that match the conditions of both clauses.
+$not: 
+$nor:
+$or:
+
+```
