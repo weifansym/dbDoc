@@ -14,4 +14,89 @@ example如下:[Unordered Bulk Write](https://docs.mongodb.com/manual/reference/m
 
 在一个共享连接上顺序执行操作将会比无序的操作慢很多，因为有序的操作必须要等到上一个操作完成之后再去执行下一个操作。
 
-默认，bulkWrite()方法是有序操作的，定义无需操作需要
+默认，bulkWrite()方法是有序操作的，定义无需操作需要在操作文档的时候设置:ordered : false
+
+### bulkWrite() Methods
+bulkWrite()支持下面的写操作：
+```
+insertOne
+updateOne
+updateMany
+replaceOne
+deleteOne
+deleteMany
+```
+每一个写操作，做数组中作为一个文档传递给bulkWrite()方法。例如下面是多次写操作。
+
+characters集合包含下面的文档：
+```
+{ "_id" : 1, "char" : "Brisbane", "class" : "monk", "lvl" : 4 },
+{ "_id" : 2, "char" : "Eldon", "class" : "alchemist", "lvl" : 3 },
+{ "_id" : 3, "char" : "Meldane", "class" : "ranger", "lvl" : 3 }
+
+```
+
+下面的bulkWrite方法对这个集合进行多次操作
+```
+try {
+   db.characters.bulkWrite(
+      [
+         { insertOne :
+            {
+               "document" :
+               {
+                  "_id" : 4, "char" : "Dithras", "class" : "barbarian", "lvl" : 4
+               }
+            }
+         },
+         { insertOne :
+            {
+               "document" :
+               {
+                  "_id" : 5, "char" : "Taeln", "class" : "fighter", "lvl" : 3
+               }
+            }
+         },
+         { updateOne :
+            {
+               "filter" : { "char" : "Eldon" },
+               "update" : { $set : { "status" : "Critical Injury" } }
+            }
+         },
+         { deleteOne :
+            { "filter" : { "char" : "Brisbane"} }
+         },
+         { replaceOne :
+            {
+               "filter" : { "char" : "Meldane" },
+               "replacement" : { "char" : "Tanys", "class" : "oracle", "lvl" : 4 }
+            }
+         }
+      ]
+   );
+}
+catch (e) {
+   print(e);
+}
+
+```
+上面的操作返回值如下：
+```
+{
+   "acknowledged" : true,
+   "deletedCount" : 1,
+   "insertedCount" : 2,
+   "matchedCount" : 2,
+   "upsertedCount" : 0,
+   "insertedIds" : {
+      "0" : 4,
+      "1" : 5
+   },
+   "upsertedIds" : {
+
+   }
+}
+```
+
+### Strategies for Bulk Inserts to a Sharded Collection
+大批量的
