@@ -99,4 +99,35 @@ catch (e) {
 ```
 
 ### Strategies for Bulk Inserts to a Sharded Collection
-大批量的
+大批量的插入操作，包括初始化的数据插入或者常规的数据导入，都会影响到分片集群（shared cluster）的性能，对于批量插入要考虑下面的策略：
+
+#### Pre-Split the Collection(提前分片集合)
+如果共享集合是空的，此时集合只有一个初始块，数据保留至一个分片上。MongoDB必须花时间接收数据，创建分片，对于可用的分片描述他们的分块。为了避免这个性能消耗，你可以对集合进行提前分片，具体请看:[split-chunks-in-sharded-cluster](https://docs.mongodb.com/manual/tutorial/split-chunks-in-sharded-cluster/)。
+
+#### Unordered Writes to mongos(对mongos进行无序的写操作)
+为了避免对分片的写入性能，在使用Bulk write进行写入的时候设置**ordered**为false。mongos会同时对多个分片发送写操作。对于空的集合首先应该预分片集合。
+
+### Avoid Monotonic Throttling(避免单调节流)
+如果你的分片的key再插入的时候同时增长，然后所有的插入值都进入了集合中最后一个块中，这样将会永远操作一个单一的分片。因此，集群插入的性能将不会超过这个单一的分片。
+如果你插入的量超过了一个分片的处理能力，如果你不能够避免一个同时增长的分片key,那就要考虑下面在你程序中的修改了。
+
+* 反转二进制位的分片key,对于递增值序列，这样保护了信息，避免了关联插入顺序。
+* 交换第一个和最后16位字符然后进行移动插入。
+
+The following example, in C++, swaps the leading and trailing 16-bit word of [BSON ObjectIds](https://docs.mongodb.com/manual/reference/glossary/#term-objectid) generated so they are no longer monotonically increasing.
+```
+using namespace mongo;
+OID make_an_id() {
+  OID x = OID::gen();
+  const unsigned char *p = x.getData();
+  swap( (unsigned short&) p[0], (unsigned short&) p[10] );
+  return x;
+}
+
+void foo() {
+  // create an object
+  BSONObj o = BSON( "_id" << make_an_id() << "x" << 3 << "name" << "jane" );
+  // now we may insert o into a sharded collection
+}
+```
+
