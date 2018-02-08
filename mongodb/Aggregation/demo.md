@@ -49,3 +49,19 @@ db.users.aggregate(
   "name" : "JOE"
 }
 ```
+### 通过加入月份进行排序，只返回用户名
+下面的聚合操作通过加入月份进行排序，只返回用户名,这个操作能够帮助生成会员续期的通知。
+```
+db.users.aggregate(
+  [
+    { $project :
+       {
+         month_joined : { $month : "$joined" },
+         name : "$_id",
+         _id : 0
+       }
+    },
+    { $sort : { month_joined : 1 } }
+  ]
+)
+```
