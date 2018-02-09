@@ -65,3 +65,28 @@ db.users.aggregate(
   ]
 )
 ```
+所有users集合中的文档通过管道进行传递，管道包含如下操作：
+*  $project操作:
+   * 创建两个新字段：month_joined 和 name
+   * 限制id字段：$project操作默认传递_id字段，除非有明确的指定
+* $month操作：把joined字段的值转化成整型的月份值，接着$project把值赋值给month_joined字段
+* $sort操作：通过month_joined字段进行排序
+结果如下：
+```
+{
+  "month_joined" : 1,
+  "name" : "ruth"
+},
+{
+  "month_joined" : 1,
+  "name" : "harold"
+},
+{
+  "month_joined" : 1,
+  "name" : "kate"
+}
+{
+  "month_joined" : 2,
+  "name" : "jill"
+}
+```
