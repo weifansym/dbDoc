@@ -102,4 +102,94 @@
 ```
 在这种内嵌的情况下，只需要通过一次查询就可以获取到赞助商的整个信息。
 #### 文档引用中的一对多关系模型
-这个文档使用引用来描述文档之间的关系，下面来看作者和书之间的关系，这个例子描述了在使用引用
+这个文档使用引用来描述文档之间的关系，下面来看作者和书之间的关系，这个例子描述了在避免重复发布者信息中使用引用比使用内嵌的好处
+
+在书籍文档中内嵌发布者文档，建会导致发布者信息重复
+```
+//  书籍文档
+{
+   title: "MongoDB: The Definitive Guide",
+   author: [ "Kristina Chodorow", "Mike Dirolf" ],
+   published_date: ISODate("2010-09-24"),
+   pages: 216,
+   language: "English",
+   publisher: {
+              name: "O'Reilly Media",
+              founded: 1980,
+              location: "CA"
+            }
+}
+
+{
+   title: "50 Tips and Tricks for MongoDB Developer",
+   author: "Kristina Chodorow",
+   published_date: ISODate("2011-05-06"),
+   pages: 68,
+   language: "English",
+   publisher: {
+              name: "O'Reilly Media",
+              founded: 1980,
+              location: "CA"
+            }
+}
+```
+为了避免重复就需要把发布者的信息和书的信息分离开，当使用引用的使用，增加的关系决定了怎么存储引用关系，如果每一个发布者的图书比较少有一定限制，在发布这文档中存储书籍的引用是一种比较好的方式，反之如果每一个发布者的图书数量是没有限制的，这个数据模型是易变的，像下面不断增长的数组，例子如下：
+```
+//  发布者文档
+{
+   name: "O'Reilly Media",
+   founded: 1980,
+   location: "CA",
+   books: [123456789, 234567890, ...]
+}
+
+//  书籍文档
+{
+    _id: 123456789,
+    title: "MongoDB: The Definitive Guide",
+    author: [ "Kristina Chodorow", "Mike Dirolf" ],
+    published_date: ISODate("2010-09-24"),
+    pages: 216,
+    language: "English"
+}
+
+{
+   _id: 234567890,
+   title: "50 Tips and Tricks for MongoDB Developer",
+   author: "Kristina Chodorow",
+   published_date: ISODate("2011-05-06"),
+   pages: 68,
+   language: "English"
+}
+```
+为了避免增长的数组，在图书文档中存储发布者的引用
+```
+//  发布者信息
+{
+   _id: "oreilly",
+   name: "O'Reilly Media",
+   founded: 1980,
+   location: "CA"
+}
+
+//  图书信息
+{
+   _id: 123456789,
+   title: "MongoDB: The Definitive Guide",
+   author: [ "Kristina Chodorow", "Mike Dirolf" ],
+   published_date: ISODate("2010-09-24"),
+   pages: 216,
+   language: "English",
+   publisher_id: "oreilly"
+}
+
+{
+   _id: 234567890,
+   title: "50 Tips and Tricks for MongoDB Developer",
+   author: "Kristina Chodorow",
+   published_date: ISODate("2011-05-06"),
+   pages: 68,
+   language: "English",
+   publisher_id: "oreilly"
+}
+```
