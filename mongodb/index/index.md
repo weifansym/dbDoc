@@ -20,4 +20,7 @@ db.collection.createIndex( { name: -1 } )
 db.collection.createIndex()方法仅仅用来在相同索引不存在的情况下创建索引。
 
 mongodb的索引使用B-tree数据结构
+### Index Types (索引类型)
+mongdb提供了多种数据类型来支持查询和不同的数据类型
+#### Single Field-简单字符
 
