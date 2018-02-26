@@ -6,5 +6,14 @@ mongodb使用createIndex创建索引，对于已存在的索引可以使用reInd
 ```
 db.collection.createIndex(keys, options)
 ```
-* keys:
-* options: 
+具体参数请看官网：https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/#db.collection.createIndex
+* keys: 要建立索引的参数列表。如：{KEY:1}，其中key表示字段名，1表示升序排序，也可使用使用数字-1降序。
+* options: 可选参数，表示建立索引的设置。可选值如下：
+    * background: 
+    * unique: 
+    * name: 
+    * partialFilterExpression:
+    * sparse:
+    * expireAfterSeconds:
+    * storageEngine:
+    
