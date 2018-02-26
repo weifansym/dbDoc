@@ -142,6 +142,7 @@ explain()方法的参数如下：
 可选值有："queryPlanner"、"executionStats"、"allPlansExecution"，默认为"queryPlanner"
 
 #### explain()返回信息
+具体返回值信息请看官网：https://docs.mongodb.com/manual/reference/method/cursor.explain/#cursor.explain
 explain()的返回值有：
 * queryPlanner：（查询计划）：查询优化选择的计划细节和被拒绝的计划。
 * executionStats：（执行状态）
@@ -167,3 +168,5 @@ explain()的返回值有：
   "filterSet" : false
 }
 ```
+
+参考：https://itbilu.com/database/mongo/V1WFKy-Cl.html
