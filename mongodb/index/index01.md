@@ -109,3 +109,34 @@ db.system.indexes.find()
 ```
 db.COLLECTION_NAME.dropIndex("INDEX-NAME")
 ```
+如，删除集合sites中名为"name_1_domain_-1"的索引：
+```
+> db.sites.dropIndex("name_1_domain_-1")
+{ "nIndexesWas" : 2, "ok" : 1 }
+```
+#### 删除所有索引dropIndexes()
+```
+db.COLLECTION_NAME.dropIndexes()
+```
+如，删除集合sites中所有的索引：
+```
+> db.sites.dropIndexes()
+{
+  "nIndexesWas" : 1,
+  "msg" : "non-_id indexes dropped for collection",
+  "ok" : 1
+}
+```
+### 执行计划函数explain
+explain()是MongoDB的一个重要的查询论断工具，这个函数能够提供大量的与查询相关的信息，该函数会返回查询计划、执行状态、服务器信息，根据这些信息可以有针对性的对性能进行优化。
+#### explain()函数
+```
+cursor.explain(verbosity)
+```
+查看db.collection.find()的执行查询计划信息时，explain()的使用方法如下：
+```
+db.collection.find().explain()
+```
+explain()方法的参数如下：
+* verbose: {String}，可选参数。指定冗长模式的解释输出，方式指定后会影响explain()的行为及输出信息。
+可选值有："queryPlanner"、"executionStats"、"allPlansExecution"，默认为"queryPlanner"
