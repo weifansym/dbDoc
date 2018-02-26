@@ -140,3 +140,30 @@ db.collection.find().explain()
 explain()方法的参数如下：
 * verbose: {String}，可选参数。指定冗长模式的解释输出，方式指定后会影响explain()的行为及输出信息。
 可选值有："queryPlanner"、"executionStats"、"allPlansExecution"，默认为"queryPlanner"
+
+#### explain()返回信息
+explain()的返回值有：
+* queryPlanner：（查询计划）：查询优化选择的计划细节和被拒绝的计划。
+* executionStats：（执行状态）
+* serverInfo：（服务器信息）
+#### explain()使用示例
+有一个users集合，现查询其'status'值为'1'的数据，并查看执行情况：
+```
+> db.users.find({status:1}).explain()
+{
+  "cursor" : "BasicCursor",
+  "isMultiKey" : false,
+  "n" : 1,
+  "nscannedObjects" : 1,
+  "nscanned" : 1,
+  "nscannedObjectsAllPlans" : 1,
+  "nscannedAllPlans" : 1,
+  "scanAndOrder" : false,
+  "indexOnly" : false,
+  "nYields" : 0,
+  "nChunkSkips" : 0,
+  "millis" : 9,
+  "server" : "localhost:27017",
+  "filterSet" : false
+}
+```
