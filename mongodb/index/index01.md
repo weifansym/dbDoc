@@ -15,5 +15,15 @@ db.collection.createIndex(keys, options)
     * partialFilterExpression:
     * sparse:
     * expireAfterSeconds:
-    * storageEngine:
-    
+    * storageEngine:   
+如，为集合newsflashes建立索引：
+```
+db.getCollection('newsflashes').createIndex({postTime: 1})
+返回值如下：
+{
+    "createdCollectionAutomatically" : false,
+    "numIndexesBefore" : 1,
+    "numIndexesAfter" : 2,
+    "ok" : 1.0
+}
+```
