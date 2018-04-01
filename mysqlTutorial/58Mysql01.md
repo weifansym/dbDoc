@@ -244,3 +244,4 @@ b）%开头的模糊查询，会导致全表扫描
 自转到58到家，负责过较长一段时间DBA部门，搭建团队，讨论流程，讨论规范，讨论自动化，尝试平台化，故希望沉淀一些东西。
 
 转自：[架构师之路17年精选](https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=2651960945&idx=1&sn=d08f33c5f317fee8956252da8e0236b6&chksm=bd2d03ad8a5a8abb0370b826b7384a4095a5ed36238f0911d102b0ceee8e5d2fbe3bc80c56d9&scene=25#wechat_redirect)
+
