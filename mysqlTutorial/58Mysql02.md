@@ -146,5 +146,4 @@ SELECT oid FROM t_order WHERE status != 1;
 ==【完】==
 
 相关文章：58到家数据库30条军规解读
-转自：[再议数据库军规](https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=2651959910&idx=1&
-sn=6b6853b70dbbe6d689a12a4a60b84d8b&chksm=bd2d07ba8a5a8eac6783bac951dba345d865d875538755fe665a5daaf142efe670e2c02b7c71&scene=21#wechat_redirect)
+转自：[再议数据库军规](https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=2651959910&idx=1&sn=6b6853b70dbbe6d689a12a4a60b84d8b&chksm=bd2d07ba8a5a8eac6783bac951dba345d865d875538755fe665a5daaf142efe670e2c02b7c71&scene=21#wechat_redirect)
