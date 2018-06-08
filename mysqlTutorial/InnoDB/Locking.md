@@ -10,21 +10,21 @@ mysql官方地址：[InnoDB Locking](https://dev.mysql.com/doc/refman/5.7/en/inn
 * AUTO-INC Locks
 * Predicate Locks for Spatial Indexes
 
-### Shared_and_Exclusive_Locks
+### Shared and Exclusive Locks
 InnoDB implements standard row-level locking where there are two types of locks,
 
-### Intention_Locks
+### Intention Locks
 InnoDB supports multiple granularity locking which permits coexistence of row locks and table locks. For example,
 
-### Record_Locks
+### Record Locks
 
-### Gap_Locks
+### Gap Locks
 
-### Next-Key_Locks
+### Next-Key Locks
 
-### Insert_Intention_Locks
+### Insert Intention Locks
 
-### AUTO-INC_Locks
+### AUTO-INC Locks
 
-### Predicate_Locks_for_Spatial_Indexes
+### Predicate Locks for Spatial Indexes
 
