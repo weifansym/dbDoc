@@ -52,14 +52,41 @@ InnoDB存储引擎支持两种意向锁：
 
 数据库引擎使用意向锁来保护锁层次结构的底层资源，以防止其他事务对自己锁住的资源造成伤害，提高锁冲突检测性能。例如，当读取表里的页面时，在请求页共享锁（S锁）之前，事务在表级请求共享意向锁。这样可以防止其他事务随后在表上获取排他锁（X锁），修改整个表格。意向锁可以提高性能，因为数据库引擎仅在表级检查意向锁，确定事务是否能安全地获取该表上的锁，而不需要检查表中的每行或每页上的锁以确定事务是否可以锁定整个表。
 
-由于InnoDB存储引擎支持的是行级别的锁，因此意向锁其实不会阻塞除全表扫描意外的人任何请求（例如：LOCK TABLES ... WRITE），意向锁的主要目的是显示某人正在锁定一行，或者将要锁定表中的一行。一个意向锁的事务的数据看起来和SHOW ENGINE INNODB STATUS 和 InnoDB monitor 输出的内容很像：
+由于InnoDB存储引擎支持的是行级别的锁，因此意向锁其实不会阻塞除全表扫描意外的人任何请求（例如：LOCK TABLES ... WRITE），意向锁的主要目的是显示某人正在锁定一行，或者将要锁定表中的一行。一个意向锁的事务的数据看起来和SHOW ENGINE INNODB STATUS 和 [InnoDB monitor](https://dev.mysql.com/doc/refman/5.7/en/innodb-standard-monitor.html) 输出的内容很像：
 ```
 TABLE LOCK table `test`.`t` trx id 10080 lock mode IX
 ```
+### Record Locks（记录锁）
+记录锁是索引记录上的锁，例如：SELECT c1 FROM t WHERE c1 = 10 FOR UPDATE;防止任何其他的事务插入，更新，删除**t.c1**的为10的行。
 
-### Record Locks
+记录锁一直锁定索引记录，即使表没有定义索引。 对于这种情况，InnoDB创建一个隐藏的聚集索引并使用这个索引进行记录锁定。参看章节：[Clustered and Secondary Indexes](https://dev.mysql.com/doc/refman/5.7/en/innodb-index-types.html).
 
-### Gap Locks
+一个记录锁的事务数据类型SHOW ENGINE INNODB STATUS 和 [InnoDB monitor](https://dev.mysql.com/doc/refman/5.7/en/innodb-standard-monitor.html)操作的输出：
+```
+RECORD LOCKS space id 58 page no 3 n bits 72 index `PRIMARY` of table `test`.`t` 
+trx id 10078 lock_mode X locks rec but not gap
+Record lock, heap no 2 PHYSICAL RECORD: n_fields 3; compact format; info bits 0
+ 0: len 4; hex 8000000a; asc     ;;
+ 1: len 6; hex 00000000274f; asc     'O;;
+ 2: len 7; hex b60000019d0110; asc        ;;
+```
+该锁是加在索引上的（从上面的index PRIMARY of table `test`.`t` 就能看出来）
+记录锁可以有两种类型：lock_mode X locks rec but not gap  && lock_mode S locks rec but not gap
+
+### Gap Locks(间隙锁)
+间隙锁是一个在索引记录之间生成的锁，或者是在第一个索引之前的间隙或者最后一个索引之后间隙生成的锁。例如：SELECT c1 FROM t WHERE c1 BETWEEN 10 and 20 FOR UPDATE; 由于范围内所有现有值之间的间隔都被锁定，因此可以防止其他事务向列t.c1中插入值15，无论该列中是否已有任何这样的值。
+
+间隔可能跨越单个索引值，多个索引值，甚至是空的。
+
+间隙锁是性能和并发性之间折中的一部分，是在某些事务隔离级别中使用，而不是在其他级别中使用。
+
+对于使用唯一索引锁定行以搜索唯一行的语句，不需要使用间隙锁定（这不包括搜索条件仅是由多列构成的唯一索引的一些列的情况; 在那种情况下，会发生间隙锁定。）
+例如：如果id列具有唯一索引，则以下语句对id值为100的行仅使用索引记录锁，并且其他会话是否在上述间隔中插入行并不重要：
+```
+SELECT * FROM child WHERE id = 100;
+```
+
+
 
 ### Next-Key Locks
 
