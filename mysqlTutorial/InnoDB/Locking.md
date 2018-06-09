@@ -85,10 +85,19 @@ Record lock, heap no 2 PHYSICAL RECORD: n_fields 3; compact format; info bits 0
 ```
 SELECT * FROM child WHERE id = 100;
 ```
+如果id未被索引或者具有非唯一索引，则该语句将锁定上面说的间隙。
 
+值得注意的是冲突锁可以在一个间隙中被不同的事务获得。例如：事务A在这个间隙中获得一个共享间隙锁（gap S-lock）同时事务B在这个间隙中获得了一个排他间隙锁（gap X-lock）。允许间隙锁的原因是如果一条记录从索引中删除，则具有这条记录的不同间隙锁的不同事物必须合并。
 
+InnoDB存储引擎的间隙锁是“纯粹是抑制性的”，这意味着，他们只是阻止其他事务向这个间隙中插入数据，他们不阻止不同的事务在相同间隙获取间隙锁。因此，间隙X锁具有与间隙S锁相同的效果。
+
+可以显示禁用间隙锁定，如果你设置事务隔离级别为READ COMMITTED或者设置innodb_locks_unsafe_for_binlog这个未被弃用的系统变量。在这些情况下，对搜索和索引扫描禁用间隙锁，仅用于外键约束检查和重复键检查。
+
+把隔离级别设置为READ COMMITTED或者设置了innodb_locks_unsafe_for_binlog，还会带来其他的影响。在MySQL评估了WHERE条件后，释放不匹配行的记录锁。
+对于UPDATE语句，InnoDB执行“半连续”读取，以便将最新的提交版本返回给MySQL，以便MySQL可以确定该行是否与UPDATE的WHERE条件匹配。
 
 ### Next-Key Locks
+Next-Key锁是有在索引上的记录锁和在索引记录之前的间隙的间隙锁组成。innodb以如下方式支持行级锁，当他搜索或扫描表索引时，它会在它遇到的索引记录上设置共享或排他锁。
 
 ### Insert Intention Locks
 
