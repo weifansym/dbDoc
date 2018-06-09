@@ -97,8 +97,34 @@ InnoDB存储引擎的间隙锁是“纯粹是抑制性的”，这意味着，�
 对于UPDATE语句，InnoDB执行“半连续”读取，以便将最新的提交版本返回给MySQL，以便MySQL可以确定该行是否与UPDATE的WHERE条件匹配。
 
 ### Next-Key Locks
-Next-Key锁是有在索引上的记录锁和在索引记录之前的间隙的间隙锁组成。innodb以如下方式支持行级锁，当他搜索或扫描表索引时，它会在它遇到的索引记录上设置共享或排他锁。
+Next-Key锁是有在索引上的记录锁和在索引记录之前的间隙的间隙锁组成。
 
+innodb以如下方式支持行级锁，当他搜索或扫描表索引时，它会在它遇到的索引记录上设置共享或排他锁。因此**行级锁其实就是索引记录锁**。一个在索引记录上的next-key锁，也影响索引记录前的间隙。也就是说next-key锁是在索引记录前的间隙由一个索引记录锁加间隙锁组成。如果一个会话在索引中具有记录R上的共享或排他锁，则另一个会话不能在索引顺序中的R之前的间隙中插入新的索引记录。
+
+假设一个索引包含：10, 11, 13, 和20，对于这个索引可能next-key锁包含以下的间隔，其中圆括号表示排除间隔端点，而方括号表示包含端点：
+```
+(negative infinity, 10]
+(10, 11]
+(11, 13]
+(13, 20]
+(20, positive infinity)
+```
+对于最后一个间隔，next-key锁会锁定最大值以上的间隙并且“上游”伪记录有一个值，大于实际在索引中显示的任何值。这个上游值不是一个真实的索引记录，因此，实际上，next-key锁仅仅锁定最大索引值之后的间隙。
+
+innoDB数据库引擎模式在 REPEATABLE READ事务隔离级别。在这个例子中innoDB使用next-key锁来搜索和索引扫描。这可以防止你“幻行”。
+
+一个next-key锁的事务数据类型SHOW ENGINE INNODB STATUS 和 [InnoDB monitor](https://dev.mysql.com/doc/refman/5.7/en/innodb-standard-monitor.html)操作的输出：
+```
+RECORD LOCKS space id 58 page no 3 n bits 72 index `PRIMARY` of table `test`.`t` 
+trx id 10080 lock_mode X
+Record lock, heap no 1 PHYSICAL RECORD: n_fields 1; compact format; info bits 0
+ 0: len 8; hex 73757072656d756d; asc supremum;;
+
+Record lock, heap no 2 PHYSICAL RECORD: n_fields 3; compact format; info bits 0
+ 0: len 4; hex 8000000a; asc     ;;
+ 1: len 6; hex 00000000274f; asc     'O;;
+ 2: len 7; hex b60000019d0110; asc        ;;
+```
 ### Insert Intention Locks
 
 ### AUTO-INC Locks
