@@ -65,6 +65,15 @@
     FROM
         customers
     ORDER BY state;
+    
+下面的查询时等价的：这是MySQL官网的例子：https://dev.mysql.com/doc/refman/5.7/en/distinct-optimization.html
+```
+SELECT DISTINCT c1, c2, c3 FROM t1
+WHERE c1 > const;
+
+SELECT c1, c2, c3 FROM t1
+WHERE c1 > const GROUP BY c1, c2, c3;
+```
 ### DISTINCT and aggregate function
 你可以使用带有聚合函数的DISTINCT子句，例如SUM，AVG，COUNT等，用来在mysql使用聚合函数返回结果集之前来删除重复的行。
 例如，从customers中查询唯一的states（州）的数量。
@@ -86,5 +95,19 @@
         state IS NOT NULL
     LIMIT 5;
 上面在customers表中用来查询首先出现的5个不为空的唯一的state（州）值。
-    
+### 对于多表联合查询
+如果不使用查询中指定的所有表中的列，MySQL会在找到第一个匹配项后立即停止扫描所有未使用的表。在下面的例子中，假设在t2之前使用t1(使用EXPLAIN来分析执行过程)，当MySQL找到t2中的第一行时，MySQL停止从t2读取（对于t1中的任何特定行）
+```
+SELECT DISTINCT t1.a FROM t1, t2 where t1.a=t2.a;
+```
+### 注意事项
+Distinct 位置： 单独的distinct只能放在开头，否则报错，语法错误，例如下面的语法会报错的：
+```
+Select  player_id,distinct(task_id) from task;
+```
+与其他函数使用时候，没有位置限制如下, 下面这种情况下是正确的，可以使用。
+```
+Select player_id,count(distinct(task_id))from task;
+```
+
      
