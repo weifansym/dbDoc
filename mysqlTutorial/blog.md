@@ -1,0 +1,8 @@
+## mysql学习blog
+* http://www.cnblogs.com/f-ck-need-u/p/7586194.html
+* https://zhuanlan.zhihu.com/p/29166694
+* https://draveness.me/mysql-innodb
+* https://zhuanlan.zhihu.com/p/36905207
+* http://imysql.com/
+* http://hedengcheng.com/?p=844
+* http://mysql.taobao.org/monthly/
