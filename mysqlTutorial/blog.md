@@ -6,3 +6,4 @@
 * http://imysql.com/
 * http://hedengcheng.com/?p=844
 * http://mysql.taobao.org/monthly/
+* http://blog.51cto.com/9291927/2096680
