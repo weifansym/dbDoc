@@ -134,3 +134,4 @@ Record lock, heap no 2 PHYSICAL RECORD: n_fields 3; compact format; info bits 0
 ### 参见：
 * http://www.ywnds.com/?p=4936
 * http://mysql.taobao.org/monthly/2016/01/01/
+* https://zhuanlan.zhihu.com/p/29150809
