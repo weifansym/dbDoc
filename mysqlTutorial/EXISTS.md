@@ -158,20 +158,25 @@ MySQL EXISTS操作是一个Boolean类型的操作，返回值不是true就是fal
 例如：表A（小表），表B（大表）
 
 1：
+```
 select * from A where cc in (select cc from B) 效率低，用到了A表上cc列的索引；
 
 select * from A where exists(select cc from B where cc=A.cc) 效率高，用到了B表上cc列的索引。
+```
 相反的
 
 2：
+```
 select * from B where cc in (select cc from A) 效率高，用到了B表上cc列的索引；
 
 select * from B where exists(select cc from A where cc=B.cc) 效率低，用到了A表上cc列的索引。
-
+```
 not in 和not exists如果查询语句使用了not in 那么内外表都进行全表扫描，没有用到索引；而not extsts 的子查询依然能用到表上的索引。所以无论那个表大，用not exists都比not in要快。
+
 in 与 =的区别
+```
 select name from student where name in ('zhang','wang','li','zhao');
 与
 select name from student where name='zhang' or name='li' or name='wang' or name='zhao'
-的结果是相同的。
-in 前面 索引 exist 后面索引 用上索引快
+```
+的结果是相同的。in 前面 索引 exist 后面索引 用上索引快
