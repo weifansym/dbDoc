@@ -150,7 +150,28 @@ MySQL EXISTS操作是一个Boolean类型的操作，返回值不是true就是fal
 > 这里
   有一个有趣的问题：http://www.cnblogs.com/mytechblog/articles/2105785.html 
  
-    
+ ### IN和EXISTS的优化
+ mysql中的in语句是把外表和内表作hash 连接，而exists语句是对外表作loop循环，每次loop循环再对内表进行查询。一直大家都认为exists比in语句的效率要高，这种说法其实是不准确的。这个是要区分环境的。
 
+如果查询的两个表大小相当，那么用in和exists差别不大。
+如果两个表中一个较小，一个是大表，则子查询表大的用exists，子查询表小的用in：
+例如：表A（小表），表B（大表）
 
+1：
+select * from A where cc in (select cc from B) 效率低，用到了A表上cc列的索引；
 
+select * from A where exists(select cc from B where cc=A.cc) 效率高，用到了B表上cc列的索引。
+相反的
+
+2：
+select * from B where cc in (select cc from A) 效率高，用到了B表上cc列的索引；
+
+select * from B where exists(select cc from A where cc=B.cc) 效率低，用到了A表上cc列的索引。
+
+not in 和not exists如果查询语句使用了not in 那么内外表都进行全表扫描，没有用到索引；而not extsts 的子查询依然能用到表上的索引。所以无论那个表大，用not exists都比not in要快。
+in 与 =的区别
+select name from student where name in ('zhang','wang','li','zhao');
+与
+select name from student where name='zhang' or name='li' or name='wang' or name='zhao'
+的结果是相同的。
+in 前面 索引 exist 后面索引 用上索引快
