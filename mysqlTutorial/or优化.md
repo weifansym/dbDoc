@@ -25,7 +25,7 @@ if no result sql1:
   sql1 = select f_crm_id from d_dbname1.t_tbname1 where  f_xxx_id = 900000  and f_phone ='1234567891' limit 1;
     sql1.execute();
 ```
-复杂一点的场景是止返回一条记录那么简单，limit 2：
+复杂一点的场景是不止返回一条记录那么简单，limit 2：
 ```
 select a.f_crm_id from d_dbname1.t_tbname1 as a 
 where (a.f_create_time > from_unixtime('1464107527') or a.f_modify_time > from_unixtime('1464107527') )
