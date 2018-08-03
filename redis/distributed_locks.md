@@ -36,3 +36,4 @@ end
 参考：
 * [Distributed locks with Redis](https://redis.io/topics/distlock#distributed-locks-with-redis)
 * http://redisdoc.com/string/set.html
+* http://zhangtielei.com/posts/blog-redlock-reasoning.html
