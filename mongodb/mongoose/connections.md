@@ -73,7 +73,23 @@ mongoose使用**mongoose.connect()**创建默认链接。你可以通过**mongoo
 注意mongoose.connect()与mongoose.createConnectio()的不同：
 * mongoose.connect()：用于创建一个mongoose的默认链接，返回一个promise
 * mongoose.createConnectio():用户创建链接实例，返回创建的链接实例。每一个链接实例映射的一个单一的数据库，在管理对个数据库链接的时候这个方法很有用。
-具体的区别参见：[]()
+
+具体的区别参见：https://blog.csdn.net/younglao/article/details/76443726
+
+在构建model的时候也是有区别的,官方描述如下：
+
+使用mongoose.model方法：
+```
+When you use mongoose.model(), your model will use the default mongoose connection.
+链接方式如下：mongoose.connect('localhost', 'gettingstarted');
+```
+使用数据库连接的方法：
+```
+If you create a custom connection, use that connection's model() function instead.
+方式如下：
+var connection = mongoose.createConnection('mongodb://localhost:27017/test');
+var Tank = connection.model('Tank', yourSchema);
+```
 ### Connection pools
 
 
