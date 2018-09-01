@@ -67,4 +67,5 @@ mongoose.connect('mongodb://mongosA:27501,mongosB:27501', cb);
 ```
 const conn = mongoose.createConnection('mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]', options);
 ```
-然后此链接对象作用于创建
+然后此链接对象作用于创建和检索Model,Model始终作用于单个链接。mongoose使用**mongoose.connect()**创建默认链接。你可以通过**mongoose.connection**访问默认的链接。
+### Connection pools
