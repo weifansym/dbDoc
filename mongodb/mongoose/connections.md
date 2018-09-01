@@ -69,3 +69,6 @@ const conn = mongoose.createConnection('mongodb://[username:password@]host1[:por
 ```
 然后此链接对象作用于创建和检索Model,Model始终作用于单个链接。mongoose使用**mongoose.connect()**创建默认链接。你可以通过**mongoose.connection**访问默认的链接。
 ### Connection pools
+
+
+### 单数据库下与多数据库下的链接处理
