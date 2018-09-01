@@ -45,3 +45,26 @@ const options = {
 };
 mongoose.connect(uri, options);
 ```
+### keepAlive
+keepAlive默认是true在mongoose 5.2.0版本之后。
+### Replica Set Connections
+连接副本集的时候需要传递一个hosts列表，而不是一个简单的host。
+```
+mongoose.connect('mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]' [, options]);
+```
+例如：
+```
+mongoose.connect('mongodb://user:pw@host1.com:27017,host2.com:27017,host3.com:27017/testdb');
+```
+### Multi-mongos support
+你可以使用mongoose在高可用集群中链接多个MongoDB实例。您无需传递任何特殊选项即可连接到mongoose 5.x中的多个mongos。
+```
+// Connect to 2 mongos servers
+mongoose.connect('mongodb://mongosA:27501,mongosB:27501', cb);
+```
+### Multiple connections
+到目前为止我们看到的都是使用mongoose默认的链接来链接MongoDB。有时我们可能需要为Mongo打开多个连接，每个连接具有不同的读/写设置，或者可能仅仅针对不同的数据库。在这些情况下，我们可以使用mongoose.createConnection（）方法，这个方法接受前面已经讨论过的所有参数，并为您返回一个新连接。
+```
+const conn = mongoose.createConnection('mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]', options);
+```
+然后此链接对象作用于创建
