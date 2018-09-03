@@ -74,7 +74,7 @@ mongoose使用**mongoose.connect()**创建默认链接。你可以通过**mongoo
 * mongoose.connect()：用于创建一个mongoose的默认链接，返回一个promise
 * mongoose.createConnectio():用户创建链接实例，返回创建的链接实例。每一个链接实例映射的一个单一的数据库，在管理对个数据库链接的时候这个方法很有用。
 
-具体的区别参见：https://blog.csdn.net/younglao/article/details/76443726
+具体的区别参见：[多库链接](https://github.com/weifansym/dbDoc/blob/master/mongodb/mongoose/%E5%A4%9A%E5%BA%93%E9%93%BE%E6%8E%A5.md)
 
 在构建model的时候也是有区别的,官方描述如下：
 
@@ -91,6 +91,7 @@ var connection = mongoose.createConnection('mongodb://localhost:27017/test');
 var Tank = connection.model('Tank', yourSchema);
 ```
 ### Connection pools
-
+mongoose.connect和mongoose.createConnection方法通过内部配置生成了一个连接池，所以这个最好自己配置。
 
 ### 单数据库下与多数据库下的链接处理
+具体参见：[多库链接](https://github.com/weifansym/dbDoc/blob/master/mongodb/mongoose/%E5%A4%9A%E5%BA%93%E9%93%BE%E6%8E%A5.md)
