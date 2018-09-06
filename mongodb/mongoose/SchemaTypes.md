@@ -85,6 +85,13 @@ var schema2 = new Schema({
 #### Dates
 #### Mixed
 #### ObjectIds
+指定一个类型为ObjectId，在你的声明中使用Schema.Types.ObjectId。
+```
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Schema.Types.ObjectId;
+var Car = new Schema({ driver: ObjectId });
+// or just Schema.ObjectId for backwards compatibility with v2
+```
 #### Boolean
 #### Arrays
 #### Maps
