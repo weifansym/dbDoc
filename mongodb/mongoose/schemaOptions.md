@@ -102,12 +102,32 @@ console.log(JSON.stringify(m)); // { "_id": "504e0cd7dd992d9be2f20b6f", "name": 
 ```
 查看所有**toJSON/toObject**可用的选项，请看：[document_Document-toObject](https://mongoosejs.com/docs/api.html#document_Document-toObject)
 ### option: toObject
-文档有toObject方法
+文档有toObject方法，此方法会转化mongoose文档为一个简单的javascript对象。这个方法接受一些可选值，与其在每个文档的基础上使用这个可选项，我们可以通过在和schema生成的地方声明设置这些可选项，这些选项默认会作用在所有这个schema下的文档。
+
+要在console.log输出中显示所有虚拟内容，请将toObject选项设置为{getters：true}：
+```
+var schema = new Schema({ name: String });
+schema.path('name').get(function (v) {
+  return v + ' is my name';
+});
+schema.set('toObject', { getters: true });
+var M = mongoose.model('Person', schema);
+var m = new M({ name: 'Max Headroom' });
+console.log(m); // { _id: 504e0cd7dd992d9be2f20b6f, name: 'Max Headroom is my name' }
+```
+查看可用的toObject选项，参见：[document_Document-toObject](https://mongoosejs.com/docs/api.html#document_Document-toObject)
 ### option: typeKey
 ### option: validateBeforeSave
 ### option: versionKey
 ### option: collation
 ### option: skipVersioning
 ### option: timestamps
+如果设置了timestamps，mongoose添加createdAt and updatedAt 字段到你的schema中, 他们的类型是Date。默认这两个字段的名字是createdAt and updatedAt 。自定义字段名通过设置timestamps.createdAt and timestamps.updatedAt。
+```
+var thingSchema = new Schema({..}, { timestamps: { createdAt: 'created_at' } });
+var Thing = mongoose.model('Thing', thingSchema);
+var thing = new Thing();
+thing.save(); // `created_at` & `updatedAt` will be included
+```
 ### option: useNestedStrict
 ### 
