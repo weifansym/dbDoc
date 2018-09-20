@@ -84,6 +84,18 @@ var schema2 = new Schema({
 ### Usage notes
 #### Dates
 #### Mixed
+任意类型的SchemaType，它的灵活性来自于它难以维护的权衡。通过传递Schema.Types.Mixed或者一个空的对象字面量使得Mixed变得可用。一下方式是等效的：
+```
+var Any = new Schema({ any: {} });
+var Any = new Schema({ any: Object });
+var Any = new Schema({ any: Schema.Types.Mixed });
+```
+因为他是一个没有schema的类型，你可以把值改成任意的类型，但是mongoose失去了自动检测和保存这些变化的能力。告诉mongoose这个Mixed类型的值改变了，调用文档的**markModified(path)** 方法，传递你刚才改变的Mixed类型的字段名。
+```
+person.anything = { x: [3, 4, { y: "changed" }] };
+person.markModified('anything');
+person.save(); // anything will now get saved
+```
 #### ObjectIds
 指定一个类型为ObjectId，在你的声明中使用Schema.Types.ObjectId。
 ```
