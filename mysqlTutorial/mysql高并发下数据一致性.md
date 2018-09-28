@@ -26,36 +26,8 @@ update stock set stock=stock-count where sid=$sid and stock>=count
 ### 4.针对秒杀系统
 针对秒杀系统由于并发量比较大，所以可以使用消息队列来进行异步的错峰流控，处理对数据库的写操作
 
-4.通过redis实现，读和写都操作redis。写redis数据时，同时产生一条业务相关联的日志数据。单独开个任务或者消息队列来对日志数据进行读取，获取里面的对数据库的操作。然后进行写数据库。
+### 5.通过redis实现
 
-5.因为redis支持事务，所有写操作可以通过lua脚本来支持对数据库的操作。
+1.读和写都操作redis。写redis数据时，同时产生一条业务相关联的日志数据。单独开个任务或者消息队列来对日志数据进行读取，获取里面的对数据库的操作。然后进行写数据库。
 
-6.写update语句时，还可以这样写。update produce p set p.num=$SumNum-$num where p.num=$sumNum and $sumNum-$num>0;
-
-更新某个库存值时，首先获取当前库存量。更新时传入查询到的数量。减出此次要操作的数量。加上两个限制条件：
-
-1.查询到的数量和数据库里面的库存数量一致
-
-2.此次操作后，库存数量大于0。
-
-## 利用锁，防止重复提交
-例如利用redis的单线程模式,构建一个Redis锁，来对重复提交进行过滤。
-```
-async setNx(key, value, exp){
-      exp = exp || 5;
-      return redisClient.getRedisClient().set(key, value, 'EX', exp, 'NX');
-    }
-```
-在多次快速提交情况下，第一次会向redis中添加一个key。来构建一个锁，其他相同请求到来时，会首先检查锁是否存在，存在给出相应提示。第一个请求处理完成后，
-删除前面的redis的key。
-```
-async delKey(key) {
-        return new Promise((resolve, reject)=> {
-            redisClient.getRedisClient().del(key);
-            resolve()
-        })
-    }
-```
-## mysql中对数据添加唯一主键，或者多列构成unique索引。
-下面以一个用户自选股为例，
-
+2.因为redis支持事务，所有写操作可以通过lua脚本来支持对数据库的操作。
