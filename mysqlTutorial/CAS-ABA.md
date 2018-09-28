@@ -3,11 +3,15 @@
 库存业务，stock(sid, num)，其中：
 •sid为库存id
 •num为库存值
+
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set007.png)
+
 如上图所示，两个并发的查询库存操作，同时从数据库都得到了库存是5。
 
 接下来用户发生了并发的库存扣减动作：
+
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set008.png)
+
 如上图所示：
 •用户1购买了3个库存，于是库存要设置为2
 •用户2购买了2个库存，于是库存要设置为3
@@ -49,15 +53,19 @@ CAS乐观锁机制确实能够提升吞吐，并保证一致性，但在极端�
 
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set009.png)
 并发1（上）：读取栈顶的元素为“A1”
+
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set010.png)
 并发2：进行了2次出栈
+
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set011.png)
 并发3：又进行了1次出栈、
+
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set012.png)
 并发1（下）：实施CAS乐观锁，发现栈顶还是“A1”，于是修改为A2
+
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set013.png)
 此时会出现系统错误，因为此“A1”非彼“A1”
-五、ABA问题的优化
+### 五、ABA问题的优化
 ABA问题导致的原因，是CAS过程中只简单进行了“值”的校验，再有些情况下，“值”相同不会引入错误的业务逻辑（例如库存），有些情况下，“值”虽然相同，却已经不是原来的数据了。
 
 优化方向：CAS不能只比对“值”，还必须确保的是原来的数据，才能修改成功。
@@ -78,6 +86,7 @@ select num from stock where sid=$sid
 ```
 select num, version from stock where sid=$sid
 ```
+
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set014.png)
 假设有并发操作，都会将版本号查询出来
 
@@ -89,6 +98,7 @@ update stock set num=$num_new where sid=$sid and num=$num_old
 update stock set num=$num_new, version=$version_new
  where sid=$sid and version=$version_old
 ```
+
 ![并发](https://github.com/weifansym/dbDoc/blob/master/images/mysql/set015.png)
 此时假设有并发操作，第一个操作，比对版本号成功，于是把库存和版本号都进行了修改。
 
