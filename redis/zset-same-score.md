@@ -121,8 +121,9 @@ ZREVRANGE test 0 -1 withscores
 但是当既需要展示排名，又需要展示得分信息，且需要保证获取的数组是按序时，为了方便查询时，较快获取排名、得分。我采用的方式是，将排名、得分分别写入两个 zset中。理想状态下，期望写一个 zset，并同时储存排名、得分信息，且方便取出，又不会丢失精度。目前，没有找到这种解决办法。
 
 参考文章
-[基于redis排行榜的实战总结](https://www.cnblogs.com/mumuxinfei/p/5337329.html)
-[Redis数据结构实际应用场景之排行榜](https://zhuanlan.zhihu.com/p/25729411)
-[【LeetCode】178.分数排名](https://blog.csdn.net/wal1314520/article/details/80107833)
-[使用Redis Zset来处理活动常用排行榜（精确排行）](https://segmentfault.com/a/1190000011737336)
-[mysql 计算排名，生成排行榜](https://segmentfault.com/a/1190000014386692)
+* [基于redis排行榜的实战总结](https://www.cnblogs.com/mumuxinfei/p/5337329.html)
+* [Redis数据结构实际应用场景之排行榜](https://zhuanlan.zhihu.com/p/25729411)
+* [【LeetCode】178.分数排名](https://blog.csdn.net/wal1314520/article/details/80107833)
+* [使用Redis Zset来处理活动常用排行榜（精确排行）](https://segmentfault.com/a/1190000011737336)
+* [mysql 计算排名，生成排行榜](https://segmentfault.com/a/1190000014386692)
+* [redis精度](https://www.v2ex.com/t/396897)
