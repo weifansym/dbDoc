@@ -294,4 +294,6 @@ select * from t_user order by time offset 200 limit 100
 
 （5）得到了time_min在全局的offset，自然得到了全局的offset X limit Y
 
-参考：https://www.jianshu.com/p/198ee07ddd7c
+参考：
+1、https://www.jianshu.com/p/198ee07ddd7c
+2、https://www.zhihu.com/question/20182133
