@@ -38,4 +38,18 @@ db.inventory.find( { item: { $not: { $regex: /^p.*/ } } } )
 ### 索引的使用
 对于区分大小写的字段，正则表达式可以使用索引，特别是前缀索引可以显著的提高性能。前缀搜索引就是以（^）开头或者左边使用（\A）。
 对于大小写不敏感的字段是不能使用索引的。
-
+### Perform a LIKE Match
+```
+db.products.find( { sku: { $regex: /789$/ } } )
+```
+上面等内容等价于sql语句中的
+```
+SELECT * FROM products
+WHERE sku like "%789";
+```
+### 其他
+正则表达式中如果没有锚点，比如^,$等字符，则为全局匹配，例如：
+```
+db.products.find( { description: { $regex: /S/ } } )
+```
+匹配description中的所有S
