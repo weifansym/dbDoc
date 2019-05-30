@@ -36,4 +36,4 @@ db.inventory.find( { item: { $not: { $regex: "^p.*" } } } )
 db.inventory.find( { item: { $not: { $regex: /^p.*/ } } } )
 ```
 ### 索引的使用
-对于区分
+对于区分大小写的字段，正则表达式可以是使用的所以，特别是前缀索引可以显著的提高性能。
