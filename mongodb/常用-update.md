@@ -42,7 +42,4 @@ db.getCollection('people').find({}).forEach(function (item) {
     "updateTime" : ISODate("2019-06-05T11:32:15.928Z")
 }
 ```
-db.getCollection('people').find({}).forEach(function (item) {
-	db.getCollection('people').update({"_id":item._id},{"$set": {"updateTime": new Date() }}, true, true)
-} )
 
