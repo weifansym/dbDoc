@@ -17,7 +17,7 @@
     "createTime" : ISODate("2019-06-05T11:32:15.928Z")
 }
 ```
-通过光标操作：forEach,进行赋值
+通过光标操作：[forEach](https://docs.mongodb.com/manual/reference/method/cursor.forEach/#cursor.forEach),进行赋值
 ```
 db.getCollection('people').find({}).forEach(function (item) {
 	db.getCollection('people').update({"_id":item._id},{"$set": {"updateTime": item.createTime }}, false, true)
