@@ -42,4 +42,26 @@ db.getCollection('people').find({}).forEach(function (item) {
     "updateTime" : ISODate("2019-06-05T11:32:15.928Z")
 }
 ```
-
+### mongodb增加修改字段
+增加字段 : "Season"
+```
+{ $set: { <field1>: <value1>, ... } }
+```
+修改字段名称 : "team"→"NBA Team"
+```
+{$rename: { <field1>: <newName1>, <field2>: <newName2>, ... } }
+```
+mongo-shell完整示例代码：
+```
+use nba
+db.createCollection(players)
+db.players.insert({"team":"Cleveland","firstname":"Irving","lastname":"Kyrie"})
+db.players.update({"firstname":"Irving"},{$set:{"team":"Cletics","Season":"2017~2018"}})
+db.players.update({"firstname":"Irving"},{$rename:{"team":"NBA Team"}})
+```
+记录一下数据变化：
+```
+{ "_id" : ObjectId("59a1a734c8143c78793d3da6"), "firstname" : "Irving", "lastname" : "Kyrie", "team" : "Cleveland" }
+{ "_id" : ObjectId("59a1a734c8143c78793d3da6"), "firstname" : "Irving", "lastname" : "Kyrie", "team" : "Cletics", "Season" : "2017~2018" }
+{ "_id" : ObjectId("59a1a734c8143c78793d3da6"), "firstname" : "Irving", "lastname" : "Kyrie", "NBA Team" : "Cletics", "Season" : "2017~2018" }
+```
