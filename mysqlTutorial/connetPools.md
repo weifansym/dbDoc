@@ -820,3 +820,4 @@ commons-collections.jar ：连接池实现的集合类
 参考：
 * https://www.cnblogs.com/zping/archive/2008/10/29/1322440.html
 * https://www.jianshu.com/p/9908ebedc3f7
+* https://www.cnblogs.com/aspirant/p/6747238.html
