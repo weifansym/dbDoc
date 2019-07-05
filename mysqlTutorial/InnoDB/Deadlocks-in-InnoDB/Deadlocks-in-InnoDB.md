@@ -1,6 +1,7 @@
 ## Deadlocks in InnoDB
 官方地址：[InnoDB中的死锁](https://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html)
-死锁的情形是：事务不能继续执行的原因是多个事务在执行的时候拥有其他事务执行需要的锁，每一个事务都在等其他的事务释放锁资源，但是他们彼此都不释放自己拥有的锁，因此导致死锁发生。
+
+死锁的描述：事务不能继续执行的原因是多个事务在执行的时候拥有其他事务执行需要的锁，每一个事务都在等其他的事务释放锁资源，但是他们彼此都不释放自己拥有的锁，因此导致死锁发生。
 
 当多个事务锁定多个表中的行时（通过语句,例如：UPDATE或SELECT ... FOR UPDATE）,但执行的顺序是相反的（即加锁的顺序相反）一个死锁就会发生。当一些语句锁定索引记录的范围和间隙时（即范围锁与间隙锁），也会发生死锁。因为每个事务都会由于时间问题而获取一些锁，而不是其他锁，对于一个死锁的例子[An InnoDB Deadlock Example
 ](https://dev.mysql.com/doc/refman/5.7/en/innodb-deadlock-example.html)。
