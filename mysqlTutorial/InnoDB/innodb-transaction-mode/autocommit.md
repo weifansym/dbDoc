@@ -1,5 +1,6 @@
 ## autocommit, Commit, and Rollback(自动提交，提交与回滚)
 官网地址：[自动提交,提交与回滚](https://dev.mysql.com/doc/refman/5.7/en/innodb-autocommit-commit-rollback.html)
+
 在innodb中，所有用户的活动都是在事务中发生的。如果autocommit模式为true，每一个声明语句都会构建一个简单的事务。默认mysql为每个autocommit可用状态的
 下的新连接开启一个会话，所以mysql在每个声明语句（这个声明语句不返回错误）后无需执行提交。如果声明语句返回一个错误，则commit or rollback的行为依赖于
 这个错误，关于错误参看：[innodb-error](https://dev.mysql.com/doc/refman/5.7/en/innodb-error-handling.html)。
