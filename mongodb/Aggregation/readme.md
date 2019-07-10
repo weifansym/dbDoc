@@ -5,4 +5,7 @@
 
 ## $lookup
 [$lookup](https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
+
 mongodb虽然提供了类似sql中jion的操作，现在版本的$lookup还很不友好，特别是4.0一下的，好多方法不支持，比如**$toString**等。
+
+参考：https://stackoverflow.com/questions/41093647/mongodb-join-on-id-field-from-string-to-objectid
