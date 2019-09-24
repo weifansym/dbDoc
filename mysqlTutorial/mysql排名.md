@@ -130,3 +130,4 @@ WHERE total.id = 2;
 
 参考：
 * https://github.com/weifansym/dbDoc/blob/master/redis/zset-same-score.md
+* https://segmentfault.com/a/1190000014386692
