@@ -73,3 +73,8 @@ WHERE relation.tab_id=1 AND relation.type=2
 order by start_time DESC;
 COMMIT;
 ```
+### sum后保留小数
+例如保留2位
+```
+SELECT cast(sum(column_a+column_b) AS decimal(15,2)) FROM `tabname`
+```
