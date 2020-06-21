@@ -92,3 +92,13 @@ ORDER BY DEPT
   DEPT  MAXIMUM  MINIMUM 
       销售部 3500 3000
 ```      
+注意：
+```
+注意：
+
+1.group by 可以包含任意数目的列
+2.group by 中每个列都必须是检索列或有效的表达式（但不能使聚集函数）
+3.除聚集函数外，select语句中的每个列都必须在group by子句中出现
+4.如果分组列有Null值，Null将作为一个分组返回
+5.group by 子句必须出现在where子句之后, order by 之前
+```
