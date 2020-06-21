@@ -102,3 +102,4 @@ ORDER BY DEPT
 4.如果分组列有Null值，Null将作为一个分组返回
 5.group by 子句必须出现在where子句之后, order by 之前
 ```
+参考：https://yq.aliyun.com/articles/530343
