@@ -53,7 +53,7 @@ GROUP BY DEPT, EDLEVEL
 ORDER BY DEPT, EDLEVEL
 ```
 查询结果如下：
-````
+```
   DEPT  EDLEVEL  MAXIMUM 
       设计部 4 2300
       设计部 5 2600
