@@ -492,3 +492,4 @@ client.connected属性会返回一个布尔值，表示与Redis 服务器的连�
     });
 
 
+### 测试
