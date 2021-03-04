@@ -71,7 +71,7 @@ Q：varchar到底能存多少个字符？
 这与表使用的字符集相关，latin1、gbk、utf8、utf8mb4编码存放一个字符分别需要占1、2、3、4个字节，同时还要考虑到去除其他字段的占用影响。
 实践出真知，可以简单试一下之后再下结论。
 ### 其他热文推进
-[隐秘的 MySQL 类型转换](https://xie.infoq.cn/article/8b0e0f71a8aa818d271625c85)
-[MySQL explain 中的 rows 究竟是如何计算的？](https://xie.infoq.cn/article/c028ea15eae7470a8d3e7a2bd)
-[MySQL 索引问题探究手记](https://xie.infoq.cn/article/714e462e9af596348975ab95a)
+* [隐秘的 MySQL 类型转换](https://xie.infoq.cn/article/8b0e0f71a8aa818d271625c85)
+* [MySQL explain 中的 rows 究竟是如何计算的？](https://xie.infoq.cn/article/c028ea15eae7470a8d3e7a2bd)
+* [MySQL 索引问题探究手记](https://xie.infoq.cn/article/714e462e9af596348975ab95a)
 
