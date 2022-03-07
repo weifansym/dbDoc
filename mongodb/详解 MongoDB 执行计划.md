@@ -235,7 +235,7 @@ $nin  (not in)         !in
 { <qty>: { $gt: 20 } }
 ```
 ### 参考
-* MongoDB 执行计划获取 (db.collection.explain ())
+* https://www.zhangshengrong.com/p/w4N7ELd1rl/
 * https://docs.mongodb.com/manual/reference/explain-results/#executionstats
 
 转自：http://rainbowhorse.site/%E8%AF%A6%E8%A7%A3MongoDB%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6
