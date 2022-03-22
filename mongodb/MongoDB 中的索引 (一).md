@@ -131,6 +131,7 @@ db.events.find().sort( { username: 1, date: 1 })
 | sort( { username: -1, date: 1 } )  | 支持 | 不支持 |
 | sort( { username: 1, date: 1 } )  | 不支持  | 支持  |
 | sort( { username: -1, date: -1 } )  | 不支持 | 支持 |
+
 即排序的顺序必须要和索引一致，逆序之后一致也可以，下表清晰的列出了 compound index 满足的 query 语句：
 
 | query | index |
@@ -151,6 +152,7 @@ db.events.find().sort( { username: 1, date: 1 })
 | r1  | db.data.find( { a: 5 } ).sort( { b: 1, c: 1 } )  | { a: 1 , b: 1, c: 1 }  |
 | r2  | db.data.find( { b: 3, a: 4 } ).sort( { c: 1 } ) | { a: 1, b: 1, c: 1 } |
 | r3  | db.data.find( { a: 5, b: { $lt: 3} } ).sort( { b: 1 } )  | { a: 1, b: 1 }  |
+
 上面表格 r1 的排序 field 是 b 和 c，a 是 index field 而且在 b 和 c 之前，可以使用索引；r3 的排序中 b 是范围查询，但是 b 之前的 a 用的也是等值条件，也就是只要排序 field 之前的 
 field 满足等值条件即可，其它的 field 可以任意条件。
 
