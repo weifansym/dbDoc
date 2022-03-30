@@ -26,7 +26,9 @@ Keys ： 要创建的索引字段
 
 #### 可选参数
 <img width="798" alt="截屏2022-03-10 上午9 54 19" src="https://user-images.githubusercontent.com/6757408/157572744-f2c66cec-8e9f-4017-ab9d-7debad26aeba.png">
+
 #### 后台创建范例
+
 ```
 db.COLLECTION_NAME.ensureIndex({name: 1, age: 1}, {background: true});
 ```
