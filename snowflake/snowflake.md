@@ -1,2 +1,10 @@
 ## 分布式id生成算法：snowflake
 * 美团分布式id项目：https://github.com/Meituan-Dianping/Leaf
+* https://learnku.com/articles/26821
+* https://segmentfault.com/a/1190000024499175
+* https://github.com/asong2020/go-algorithm/tree/master/leaf
+* https://cloud.tencent.com/developer/article/1820225
+* https://github.com/bwmarrin/snowflake
+* https://www.luozhiyun.com/archives/527
+* https://github.com/GUAIK-ORG/go-snowflake
+* https://github.com/charizer/snowflake
