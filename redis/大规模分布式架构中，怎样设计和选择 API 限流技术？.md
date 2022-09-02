@@ -333,9 +333,5 @@ https://github.com/youtube/doorman
 在结束之前，我想跟你分享一个我个人比较认可的观点：没有完美的技术方案，只有最合适的。如尚未深思熟虑，先从简单方案开始。
 
 转自：https://mp.weixin.qq.com/s/6Gaoj0ZHr_hfbuQLA-RPYQ
-
-
-
-
-
+https://cloud.tencent.com/developer/article/1829042
 
