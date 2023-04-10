@@ -344,3 +344,4 @@ from lee;
  
 以上就是mysql中case when语句的使用示例的介绍。
 
+转自：https://www.cnblogs.com/clphp/p/6256207.html
